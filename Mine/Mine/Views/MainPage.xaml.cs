@@ -37,9 +37,9 @@ namespace Mine.Views
             // See if the Page is in memory, if not load it
             if (!MenuPages.ContainsKey(id))
             {
-                switch (id)
+                switch (id) 
                 {
-                    case (int)MenuItemEnum.Browse:
+                    case (int)MenuItemEnum.Items:
                         MenuPages.Add(id, new NavigationPage(new ItemIndexPage()));
                         break;
                     case (int)MenuItemEnum.About:
