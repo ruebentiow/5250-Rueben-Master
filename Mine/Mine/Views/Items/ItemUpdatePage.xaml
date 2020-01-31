@@ -27,7 +27,7 @@
                 Minimum="0"
                 Maximum="10"
                 ValueChanged="Value_OnStepperValueChanged"
-                Increment="1" />
+                Increment="1"/>
 
                 <Label x:Name="ValueValue"
                        Text="{Binding Data.Value}"
