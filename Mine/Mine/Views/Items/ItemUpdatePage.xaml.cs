@@ -48,7 +48,6 @@ namespace Mine.Views
         async void Cancel_Clicked(object sender, EventArgs e)
         {
             Navigation.RemovePage(Navigation.NavigationStack[Navigation.NavigationStack.Count - 2]);
-
             await Navigation.PopAsync();
         }
 
