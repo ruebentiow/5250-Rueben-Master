@@ -55,5 +55,13 @@ namespace Mine.Views
         {
             ValueValue.Text = String.Format("{0}", e.NewValue);
         }
+
+        //Override back button on android
+        protected override bool OnBackButtonPressed()
+        {
+            //base.OnBackButtonPressed();
+
+            return true;
+        }
     }
 }
