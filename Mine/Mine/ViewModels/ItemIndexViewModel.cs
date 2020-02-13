@@ -16,6 +16,26 @@ namespace Mine.ViewModels
     /// </summary>
     public class ItemIndexViewModel : BaseViewModel
     {
+        //Singleton
+        private static volatile ItemIndexViewModel instance;
+        private static object syncRoot = new Object();
+
+        public static ItemIndexViewModel Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    lock (syncRoot)
+                    {
+                        if (instance == null)
+                            instance = new ItemIndexViewModel();
+                    }
+                }
+                return instance;
+            }
+        }
+
         // The Data set of records
         public ObservableCollection<ItemModel> Dataset { get; set; }
 
@@ -49,13 +69,6 @@ namespace Mine.ViewModels
             Dataset = new ObservableCollection<ItemModel>();
             LoadDatasetCommand = new Command(async () => await ExecuteLoadDataCommand());
 
-            // Register the Set Data Source Message
-            MessagingCenter.Subscribe<AboutPage, int>(this, "SetDataSource", (obj, data) =>
-            {
-                SetDataSource(data);
-            });
-
-
             // Register the Create Message
             MessagingCenter.Subscribe<ItemCreatePage, ItemModel>(this, "Create", async (obj, data) =>
             {
@@ -77,6 +90,17 @@ namespace Mine.ViewModels
                 await Update(data as ItemModel);
             });
 
+            // Register the Set Data Source Message
+            MessagingCenter.Subscribe<AboutPage, int>(this, "SetDataSource", (obj, data) =>
+            {
+                SetDataSource(data);
+            });
+
+            // Register the Wipe Data List Message
+            MessagingCenter.Subscribe<AboutPage, bool>(this, "WipeDataList", (obj, data) =>
+            {
+                WipeDataList();
+            });
 
         }
 
@@ -222,6 +246,12 @@ namespace Mine.ViewModels
             SetNeedsRefresh(true);
 
             return true;
+        }
+
+        public void WipeDataList()
+        {
+            DataStore.WipeDataList();
+            SetNeedsRefresh(true);
         }
 
     }

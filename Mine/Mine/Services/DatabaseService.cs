@@ -1,15 +1,15 @@
 ﻿using SQLite;
-using System.Linq;
-using System.Threading.Tasks;
-using Mine.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Mine.Models;
 
 namespace Mine.Services
 {
-    public class DatabaseService
-    {
+    public class DatabaseService : IDataStore<ItemModel>
+    { 
         static readonly Lazy<SQLiteAsyncConnection> lazyInitializer = new Lazy<SQLiteAsyncConnection>(() =>
         {
             return new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
@@ -23,7 +23,7 @@ namespace Mine.Services
             InitializeAsync().SafeFireAndForget(false);
         }
 
-        async Task InitializeAsync()
+        public async Task InitializeAsync()
         {
             if (!initialized)
             {
@@ -34,45 +34,69 @@ namespace Mine.Services
                 }
             }
         }
-        public async Task<List<ItemModel>> IndexAsync()
+
+        public void WipeDataList()
         {
-            return await Database.Table<ItemModel>().ToListAsync();
+            Database.DropTableAsync<ItemModel>().GetAwaiter().GetResult();
+            Database.CreateTablesAsync(CreateFlags.None, typeof(ItemModel)).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-        public async Task<int> CreateAsync(ItemModel item)
+        public Task<List<ItemModel>> IndexAsync(bool flag = false)
         {
-            return await Database.InsertAsync(item);
+            return Database.Table<ItemModel>().ToListAsync();
         }
 
-        public async Task<ItemModel> ReadAsync(string id)
+        public Task<bool> CreateAsync(ItemModel item)
         {
-            return await Database.Table<ItemModel>().Where(i => i.Id.Equals(id)).FirstOrDefaultAsync();
+            Database.InsertAsync(item);
+            return Task.FromResult(true);
         }
 
-        public async Task<bool> UpdateAsync(ItemModel item)
+        public Task<ItemModel> ReadAsync(string id)
         {
-            var data = await ReadAsync(item.Id);
-            if (data == null)
+            return Database.Table<ItemModel>().Where(i => i.Id.Equals(id)).FirstOrDefaultAsync();
+        }
+
+        public Task<bool> UpdateAsync(ItemModel Data)
+        {
+            var myRead = ReadAsync(Data.Id).GetAwaiter().GetResult();
+            if (myRead == null)
             {
-                return false;
+                return Task.FromResult(false);
+
             }
 
-            var result = await Database.UpdateAsync(item);
+            Database.UpdateAsync(Data);
 
-            return (result == 1);
+            return Task.FromResult(true);
         }
-       
-         public async Task<bool> DeleteAsync(string id)
+
+        public Task<bool> DeleteAsync(string id)
         {
-            var item = await ReadAsync(id);
-            if (item == null)
+            // Check if it exists...
+            var myRead = ReadAsync(id).GetAwaiter().GetResult();
+            if (myRead == null)
             {
-                return false;
+                return Task.FromResult(false);
+
             }
 
-            var result = await Database.DeleteAsync(item);
+            // Then delete...
 
-            return (result == 1);
+            Database.DeleteAsync(myRead);
+            return Task.FromResult(true);
+        }
+
+        // Delete the Datbase Tables by dropping them
+        public async void DeleteTables()
+        {
+            await Database.DropTableAsync<ItemModel>();
+        }
+
+        // Create the Datbase Tables
+        public async void CreateTables()
+        {
+            await Database.CreateTableAsync<ItemModel>();
         }
     }
 }
