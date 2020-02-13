@@ -39,5 +39,10 @@ namespace Mine.Services
             return Database.Table<ItemModel>().ToListAsync();
         }
 
+        public Task<int> CreateAsync(ItemModel item)
+        {
+            return Database.InsertAsync(item);
+        }
+
     }
 }
