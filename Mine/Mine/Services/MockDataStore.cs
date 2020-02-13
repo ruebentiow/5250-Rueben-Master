@@ -22,6 +22,12 @@ namespace Mine.Services
             LoadDefaultData();
         }
 
+        public void WipeDataList()
+        {
+            datalist.Clear();
+            LoadDefaultData();
+        }
+
         /// <summary>
         /// Load the Default data
         /// </summary>
@@ -95,7 +101,7 @@ namespace Mine.Services
         /// </summary>
         /// <param name="forceRefresh"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<ItemModel>> IndexAsync(bool forceRefresh = false)
+        public async Task<List<ItemModel>> IndexAsync(bool forceRefresh = false)
         {
             return await Task.FromResult(datalist);
         }
