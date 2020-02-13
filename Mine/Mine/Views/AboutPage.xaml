@@ -52,7 +52,7 @@
                        />
                 <Switch HorizontalOptions="Start"
                         VerticalOptions="Center"
-                        x:Name="DataSourceValue"
+                        x:Name="{Binding ItemIndexViewModel.Instance.CurrentDataSource}"
                         Toggled="DataSource_Toggled"
                         />
             </StackLayout>
