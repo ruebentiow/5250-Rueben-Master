@@ -28,7 +28,7 @@ namespace Mine.ViewModels
         public IDataStore<ItemModel> DataSource_SQL => new DatabaseService();
         public IDataStore<ItemModel> DataStore;
 
-
+        public int CurrentDataSource = 0;
 
         // Command to force a Load of data
         public Command LoadDatasetCommand { get; set; }
