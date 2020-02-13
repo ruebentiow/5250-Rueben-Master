@@ -42,10 +42,19 @@ namespace Mine.ViewModels
         /// </summary>
         public ItemIndexViewModel()
         {
+            SetDataSource(0); // Set to Mock to start with
+
             Title = "Items";
 
             Dataset = new ObservableCollection<ItemModel>();
             LoadDatasetCommand = new Command(async () => await ExecuteLoadDataCommand());
+
+            // Register the Set Data Source Message
+            MessagingCenter.Subscribe<AboutPage, int>(this, "SetDataSource", (obj, data) =>
+            {
+                SetDataSource(data);
+            });
+
 
             // Register the Create Message
             MessagingCenter.Subscribe<ItemCreatePage, ItemModel>(this, "Create", async (obj, data) =>
@@ -196,5 +205,20 @@ namespace Mine.ViewModels
             LoadDatasetCommand.Execute(null);
         }
         #endregion Refresh
+
+        public bool SetDataSource(int isSQL)
+        {
+            if(isSQL ==1)
+            {
+                DataStore = DataSource_SQL;
+            }
+            else
+            {
+                DataStore = DataSource_Mock;
+            }
+
+            return true;
+        }
+
     }
 }
