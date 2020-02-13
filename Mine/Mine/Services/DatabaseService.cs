@@ -34,9 +34,9 @@ namespace Mine.Services
                 }
             }
         }
-        public Task<List<ItemModel>> IndexAsync()
+        public async Task<List<ItemModel>> IndexAsync()
         {
-            return Database.Table<ItemModel>().ToListAsync();
+            return await Database.Table<ItemModel>().ToListAsync();
         }
 
         public Task<int> CreateAsync(ItemModel item)
@@ -53,8 +53,8 @@ namespace Mine.Services
         {
             return Database.UpdateAsync(item);
         }
-
-        public Task<int> DeleteAsync(ItemModel item)
+       
+         public Task<int> DeleteAsync(ItemModel item)
         {
             return Database.DeleteAsync(item);
         }
