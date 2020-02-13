@@ -34,7 +34,10 @@ namespace Mine.Services
                 }
             }
         }
+        public Task<List<ItemModel>> IndexAsync()
+        {
+            return Database.Table<ItemModel>().ToListAsync();
+        }
 
-        //...
     }
 }
