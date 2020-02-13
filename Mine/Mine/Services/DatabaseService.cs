@@ -49,9 +49,9 @@ namespace Mine.Services
             return await Database.Table<ItemModel>().Where(i => i.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
-        public Task<int> UpdateAsync(ItemModel item)
+        public async Task<int> UpdateAsync(ItemModel item)
         {
-            return Database.UpdateAsync(item);
+            return await Database.UpdateAsync(item);
         }
        
          public Task<int> DeleteAsync(ItemModel item)
