@@ -54,9 +54,9 @@ namespace Mine.Services
             return await Database.UpdateAsync(item);
         }
        
-         public Task<int> DeleteAsync(ItemModel item)
+         public async Task<int> DeleteAsync(ItemModel item)
         {
-            return Database.DeleteAsync(item);
+            return await Database.DeleteAsync(item);
         }
     }
 }
