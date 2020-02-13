@@ -44,6 +44,7 @@ namespace Mine.ViewModels
             // Register the Create Message
             MessagingCenter.Subscribe<ItemCreatePage, ItemModel>(this, "Create", async (obj, data) =>
             {
+                
                 await Add(data as ItemModel);
             });
 
