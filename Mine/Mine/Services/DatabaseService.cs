@@ -41,15 +41,15 @@ namespace Mine.Services
             Database.CreateTablesAsync(CreateFlags.None, typeof(ItemModel)).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-        public Task<List<ItemModel>> IndexAsync(bool flag = false)
+        public async Task<List<ItemModel>> IndexAsync(bool flag = false)
         {
-            return Database.Table<ItemModel>().ToListAsync();
+            return await Database.Table<ItemModel>().ToListAsync();
         }
 
-        public Task<bool> CreateAsync(ItemModel item)
+        public async Task<bool> CreateAsync(ItemModel item)
         {
             Database.InsertAsync(item);
-            return Task.FromResult(true);
+            return await Task.FromResult(true);
         }
 
         public Task<ItemModel> ReadAsync(string id)
@@ -57,34 +57,34 @@ namespace Mine.Services
             return Database.Table<ItemModel>().Where(i => i.Id.Equals(id)).FirstOrDefaultAsync();
         }
 
-        public Task<bool> UpdateAsync(ItemModel Data)
+        public async Task<bool> UpdateAsync(ItemModel Data)
         {
             var myRead = ReadAsync(Data.Id).GetAwaiter().GetResult();
             if (myRead == null)
             {
-                return Task.FromResult(false);
+                return await Task.FromResult(false);
 
             }
 
             Database.UpdateAsync(Data);
 
-            return Task.FromResult(true);
+            return await Task.FromResult(true);
         }
 
-        public Task<bool> DeleteAsync(string id)
+        public async Task<bool> DeleteAsync(string id)
         {
             // Check if it exists...
             var myRead = ReadAsync(id).GetAwaiter().GetResult();
             if (myRead == null)
             {
-                return Task.FromResult(false);
+                return await Task.FromResult(false);
 
             }
 
             // Then delete...
 
             Database.DeleteAsync(myRead);
-            return Task.FromResult(true);
+            return await Task.FromResult(true);
         }
 
         // Delete the Datbase Tables by dropping them
