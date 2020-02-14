@@ -9,7 +9,7 @@ using Mine.Models;
 namespace Mine.Services
 {
     public class DatabaseService : IDataStore<ItemModel>
-    { 
+    {
         static readonly Lazy<SQLiteAsyncConnection> lazyInitializer = new Lazy<SQLiteAsyncConnection>(() =>
         {
             return new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
@@ -41,14 +41,9 @@ namespace Mine.Services
             Database.CreateTablesAsync(CreateFlags.None, typeof(ItemModel)).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-        public Task<List<ItemModel>> IndexAsync(bool flag = false)
+        public Task<bool> CreateAsync(ItemModel Data)
         {
-            return Database.Table<ItemModel>().ToListAsync();
-        }
-
-        public Task<bool> CreateAsync(ItemModel item)
-        {
-            Database.InsertAsync(item);
+            Database.InsertAsync(Data);
             return Task.FromResult(true);
         }
 
@@ -85,6 +80,11 @@ namespace Mine.Services
 
             Database.DeleteAsync(myRead);
             return Task.FromResult(true);
+        }
+
+        public Task<List<ItemModel>> IndexAsync(bool flag = false)
+        {
+            return Database.Table<ItemModel>().ToListAsync();
         }
 
         // Delete the Datbase Tables by dropping them

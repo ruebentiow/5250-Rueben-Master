@@ -206,7 +206,7 @@ namespace Mine.ViewModels
 
                 foreach (var data in dataset)
                 {
-                    Dataset.Add(data);
+                    Dataset.Add(new ItemModel(data));
                 }
             }
             catch (Exception ex)
