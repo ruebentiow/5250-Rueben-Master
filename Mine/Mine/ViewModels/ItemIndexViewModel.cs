@@ -18,7 +18,7 @@ namespace Mine.ViewModels
     {
         //Singleton
         private static volatile ItemIndexViewModel instance;
-        private static object syncRoot = new Object();
+        private static readonly object syncRoot = new Object();
 
         public static ItemIndexViewModel Instance
         {
@@ -62,7 +62,7 @@ namespace Mine.ViewModels
         /// </summary>
         public ItemIndexViewModel()
         {
-            SetDataSource(0); // Set to Mock to start with
+            SetDataSource(CurrentDataSource); // Set to Mock to start with
 
             Title = "Items";
 

@@ -40,7 +40,6 @@
             </StackLayout>
         </ScrollView>
 
-        
         <ScrollView Grid.Row="2">
             <StackLayout Orientation="Vertical">
                 <StackLayout 
