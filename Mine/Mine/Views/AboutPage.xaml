@@ -64,6 +64,7 @@
 
                 </StackLayout>
 
+
                 <StackLayout 
                     Orientation="Horizontal" 
                     VerticalOptions="Center"
@@ -84,6 +85,8 @@
                     />
 
                 </StackLayout>
+
+
             </StackLayout>
         </ScrollView>
     </Grid>
